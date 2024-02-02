@@ -1,2 +1,19 @@
+.header{
+  display: flex;
+  justify-content: space-between;
+}
 
+.board{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  align-items: center;
+}
 
+.card{
+  background-color: lightblue;
+  height: 100px;
+  width: 100px;
+  text-align: center;
+  font-size: 50px;
+}
