@@ -7,6 +7,8 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
     const [APIData, setAPIData] = useState([]); // Tracks pokemons with each object containing a name and url
     const [pokemon, setPokemon] = useState([]); // Tracks our pokemon
 
+    const [gameOver, setGameOver] = useState(false);
+
     // Checks if a pokemon name already exists with a given name
     function isUnique(candidateID, arr){
         const combinedArr = pokemon.concat(arr);
@@ -65,6 +67,13 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
         appendPokemonData(2);
     }
       
+    // Called by gameOver
+    function resetGame(){
+        setGameOver(false);
+        setScore(0);
+        setCardsClicked([]);
+        setPokemon([]); 
+    }
 
 
     // Returns a new array that is a result of shuffling the given arr
@@ -89,11 +98,8 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
 
     function handleClick(e){
         if (cardsClicked.includes(e.currentTarget.id)){
-            alert("YOU LOSE")         
+            setGameOver(true);      
             if (score > hiScore) setHiScore(score);
-            setScore(0);
-            setCardsClicked([]);
-            setPokemon([]); 
         } else {
             setScore(score+1); 
             if (cardsClicked.length == pokemon.length-1){ // Check if move advances player to next level
@@ -103,22 +109,25 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
             } else {
                 setCardsClicked(cardsClicked.concat(e.currentTarget.id))
             }
-            shuffle(pokemon);
+            shuffle(pokemon); 
         }
     }
 
     return(
         
         <div className="board">
-            { pokemon &&
+            { pokemon && !gameOver &&
                 pokemon.map((pokeData) => {
                     return (
                     <div className="card" key={pokeData.id} id={pokeData.id} onClick={handleClick}>
                         <img src={pokeData.sprites.front_default} alt={pokeData.name} />
                         <div>{pokeData.name[0].toUpperCase() + pokeData.name.slice(1)}</div>
                     </div>
-                    )
+                    ) 
                 })
+            }
+            {gameOver &&
+            <button className="modal endGame" onClick={resetGame}>NEW GAME</button>
             }
         </div>
     )
