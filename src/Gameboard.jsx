@@ -96,11 +96,11 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
             }
             setScore(score+1); 
             setCardsClicked(cardsClicked.concat(e.currentTarget.id))
-            // setPokemon(shuffle(pokemon))
+            setPokemon(shuffle(pokemon))
             
         }
     }
-    // console.log(pokemon[0])
+
     return(
         
         <div className="board">
@@ -109,7 +109,7 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
                     return (
                     <div className="card" key={pokeData.id} id={pokeData.id} onClick={handleClick}>
                         <img src={pokeData.sprites.front_default} alt={pokeData.name} />
-                        <div>{pokeData.name}</div>
+                        <div>{pokeData.name[0].toUpperCase() + pokeData.name.slice(1)}</div>
                     </div>
                     )
                 })
