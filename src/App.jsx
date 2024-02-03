@@ -11,7 +11,7 @@ function App() {
   return (
     <>
     <div className='header'>
-      <h1>Memory Card Game</h1>
+      <h1>Pokemon Memory Card Game</h1>
       <div>Score: {score}</div>
       <div>High-Score: {hiScore}</div>
     </div>
