@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 function Gameboard({score, setScore, hiScore, setHiScore}){
+    // console.log("---RENDER---");
     const [cardsClicked, setCardsClicked] = useState([]); // Tracks the cards selected. 
     const API_DB_SIZE = 50; // Number of pokemon we have to choose between.
     const [APIData, setAPIData] = useState([]); // Tracks pokemons with each object containing a name and url
@@ -17,6 +18,7 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
 
     // Loads API_DB_SIZE pokemon into APIData array
     async function fetchAPIData(){
+        // console.log("fetchAPIData");
         try{
             const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit='+API_DB_SIZE, {mode: 'cors'}); //
             if (!response.ok) throw new Error('Failed getting api data');
@@ -29,6 +31,7 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
 
     // Appends pokemon based off of existing APIData
     async function appendPokemonData(numPokemon){
+        // console.log("appendPokemonData");
         let pokemonWIP = []; // Used to verifyUniqueness since pokemon array does NOT get updated until after the loop
         for (let i=0; i<numPokemon; i++){
             // Generate random pokemon ID
@@ -57,11 +60,10 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
         fetchAPIData();
     },[]) 
 
-    // Happens only once, after APIData is loaded in
-    useEffect(() => {
-        if (APIData.length > 0) appendPokemonData(2);
-    }, [APIData])
-
+    // Load in the pokemon details for start of game
+    if (APIData.length && !pokemon.length){
+        appendPokemonData(2);
+    }
       
 
 
@@ -88,14 +90,10 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
     function handleClick(e){
         if (cardsClicked.includes(e.currentTarget.id)){
             alert("YOU LOSE")         
-            // TODO: CHECK THIS OVER
             if (score > hiScore) setHiScore(score);
             setScore(0);
             setCardsClicked([]);
-  
-            
-            setPokemon([]);
-            appendPokemonData(2);
+            setPokemon([]); 
         } else {
             setScore(score+1); 
             if (cardsClicked.length == pokemon.length-1){ // Check if move advances player to next level
@@ -105,9 +103,7 @@ function Gameboard({score, setScore, hiScore, setHiScore}){
             } else {
                 setCardsClicked(cardsClicked.concat(e.currentTarget.id))
             }
-            
-            
-            
+            shuffle(pokemon);
         }
     }
 
