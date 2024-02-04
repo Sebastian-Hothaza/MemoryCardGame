@@ -15,7 +15,7 @@ function App() {
       <div>Score: {score}</div>
       <div>High-Score: {hiScore}</div>
     </div>
-    <div>Test your memory! Do not click the same card twice</div>
+    <div className='instructions'>Test your memory! Do not click the same card twice</div>
     <Gameboard score={score} setScore={setScore} hiScore={hiScore} setHiScore={setHiScore}/>
     </>
   )
